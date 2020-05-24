@@ -1,0 +1,34 @@
+{
+	"status": 0,
+	"msg": "ok",
+	"data": [{
+			"id": 1,
+			"name": "会员管理",
+			"icon": "&#xe6b8;",
+			"url": "",
+			"children": [{
+				"id": 2,
+				"name": "会员列表",
+				"icon": "",
+				"url": "./pages/member/list.html"
+			}]
+		},
+		{
+			"id": 8,
+			"name": "文章管理",
+			"icon": "&#xe705;",
+			"url": "",
+			"children": [{
+				"id": 9,
+				"name": "文章列表",
+				"icon": "",
+				"url": "./pages/article/list.html"
+			}, {
+				"id": 10,
+				"name": "分类管理",
+				"icon": "",
+				"url": "./pages/article/category.html"
+			}]
+		}
+	]
+}

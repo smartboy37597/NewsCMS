@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加会员-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+                <input type="text" id="L_username" name="title" placeholder="请输入新闻标题"  class="layui-input">
+        </div>
+
+        <div class="layui-form-item" >
+            <select id="newsProgram" name="pId" lay-verify=""></select>
+        </div>
+
+        <div class="layui-form-item">
+            <textarea name="content" required lay-verify="required" placeholder="请输入新闻内容" class="layui-textarea"></textarea>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="L_sex" class="layui-form-label">新闻状态</label>
+            <div class="layui-input-block" id="L_sex">
+                <input type="radio" name="type" value="1" title="待审核" checked>
+                <input type="radio" name="type" value="0" title="已审核" >
+                <input type="radio" name="type" value="2" title="已回收">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
+            <input type="hidden" name="userId" id="dataId" value="10000" />
+        </div>
+    </form>
+</div>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function(){
+        $.ajax({
+            url: 'http://localhost:8080/api/newsProgram/getAllNewsProgram',
+            type: 'get',
+            // 设置的是请求参数
+            // data: data.field,
+            // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+            dataType: 'json',
+            success: function (res) {
+                // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+                // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+                var data="";
+                $('#memberList > tbody').html("");
+                console.log(res.data.list);
+                data+="<option value=\"\">所属栏目</option>";
+                for (var i = 0;i<res.data.list.length;i++){
+                    data+="<option value='"+res.data.list[i]["id"]+"'>"+res.data.list[i]["name"]+"</option>";
+
+                }
+
+                $('#newsProgram').html(data);
+            }
+        })
+    });
+</script>
+<script>
+    layui.extend({
+        admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery','util','admin', 'layer'], function() {
+        var form = layui.form,
+            $ = layui.jquery,
+            util = layui.util,
+            admin = layui.admin,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            nikename: function(value) {
+                if(value.length < 5) {
+                    return '昵称至少得5个字符啊';
+                }
+            },
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            repass: function(value) {
+                if($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            }
+        });
+        //失去焦点时判断值为空不验证，一旦填写必须验证
+        $('input[name="email"]').blur(function(){
+            //这里是失去焦点时的事件
+            if($('input[name="email"]').val()){
+                $('input[name="email"]').attr('lay-verify','email');
+            }else{
+                $('input[name="email"]').removeAttr('lay-verify');
+            }
+        });
+
+        //监听提交
+        form.on('submit(add)', function(data) {
+            //console.log(data.field);
+            var f = data.field;
+            console.log(f);
+            $.ajax({
+                url: 'http://localhost:8080/api/news/postOneNews',
+                type: 'post',
+                // 设置的是请求参数
+                data: data.field,
+                // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+                dataType: 'json',
+                success: function (res) {
+                    // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+                    // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+
+                    if (res.status==0){
+                        layer.alert("增加成功", {
+                            icon: 6
+                        }, function() {
+                            // location.href='./list.html';
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+
+                        });
+
+                        // return false;
+                    }else{
+                        layer.alert("增加失败", {
+                            icon: 6
+                        }, function() {
+                            var index1 = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index1);
+                        });
+                    }
+
+
+                    console.log(res);
+
+                }
+            })
+            console.log(f.username);
+            console.log(f.sex);
+            var sex = $('input:radio[name="sex"]:checked').val();
+
+            //发异步，把数据提交给php
+            // layer.alert("增加成功", {
+            //     icon: 6
+            // }, function() {
+            //
+            //     // 获得frame索引
+            //     var index = parent.layer.getFrameIndex(window.name);
+            //
+            //     //关闭当前frame
+            //     parent.layer.close(index);
+            // });
+            return false;
+        });
+
+    });
+</script>
+
+
+</body>
+
+</html>

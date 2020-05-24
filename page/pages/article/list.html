@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>会员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<link rel="stylesheet" href="../../static/css/font.css" />
+	<link rel="stylesheet" href="../../static/css/weadmin.css" />
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<!--		<script src="static/js/admin.js"></script>-->
+</head>
+
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+				<a href="javascript:;">首页</a> <a href="javascript:;">文章管理</a>
+				<a href="javascript:;"> <cite>文章列表</cite></a>
+			</span>
+	<a class="layui-btn layui-btn-sm" style="margin-top:3px;float:right" href="javascript:location.replace(location.href);"
+	   title="刷新">
+		<i class="layui-icon layui-icon-refresh"></i>
+		<!-- <i class="layui-icon" style="line-height:30px">&#x1002;</i> -->
+	</a>
+</div>
+
+<div class="weadmin-body">
+	<!--			<div class="layui-row">-->
+	<!--				<form class="layui-form layui-col-md12 we-search">-->
+	<!--					会员搜索：-->
+	<!--					<div class="layui-inline">-->
+	<!--						<input class="layui-input" placeholder="开始日" name="start" id="start" />-->
+	<!--					</div>-->
+	<!--					<div class="layui-inline">-->
+	<!--						<input class="layui-input" placeholder="截止日" name="end" id="end" />-->
+	<!--					</div>-->
+	<!--					<div class="layui-inline">-->
+	<!--						<input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" />-->
+	<!--					</div>-->
+	<!--					<button class="layui-btn" lay-submit="" lay-filter="sreach">-->
+	<!--						<i class="layui-icon layui-icon-search"></i>-->
+	<!--					</button>-->
+	<!--				</form>-->
+	<!--			</div>-->
+	<div class="weadmin-block">
+		<!--				<button class="layui-btn layui-btn-danger" onclick="delAll()">-->
+		<!--					<i class="layui-icon layui-icon-delete"></i>批量删除-->
+		<!--				</button>-->
+		<button class="layui-btn" onclick="WeAdminShow('添加文章','./add.html',600,400)">
+			<i class="layui-icon layui-icon-add-circle-fine"></i>添加
+		</button>
+		<!--				<span class="fr" style="line-height:40px">共有数据：88 条</span>-->
+	</div>
+
+	<table class="layui-table" id="memberList">
+		<thead>
+		<tr>
+			<th>
+				<div class="layui-unselect header layui-form-checkbox" lay-skin="primary">
+					<i class="layui-icon">&#xe605;</i>
+				</div>
+			</th>
+			<th>ID</th>
+			<th>分类ID</th>
+			<th>用户ID</th>
+			<th>标题</th>
+			<th>阅读数量</th>
+			<th>状态</th>
+			<th>发布时间</th>
+			<th>更新时间</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+
+		<!--					<tr data-id="2">-->
+		<!--						<td>-->
+		<!--							<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="2">-->
+		<!--								<i class="layui-icon">&#xe605;</i>-->
+		<!--							</div>-->
+		<!--						</td>-->
+		<!--						<td>2</td>-->
+		<!--						<td>小明</td>-->
+		<!--						<td>女</td>-->
+		<!--						<td>13000000000</td>-->
+		<!--						<td>admin@mail.com</td>-->
+		<!--						<td>北京市 海淀区</td>-->
+		<!--						<td>2017-01-01 11:11:42</td>-->
+		<!--						<td class="td-status">-->
+		<!--							<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>-->
+		<!--						</td>-->
+		<!--						<td class="td-manage">-->
+		<!--							<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
+		<!--								<i class="layui-icon layui-icon-download-circle"></i>-->
+		<!--							</a>-->
+		<!--							<a title="编辑" onclick="WeAdminEdit('编辑','./edit.html', 2, 600, 400)" href="javascript:;">-->
+		<!--								<i class="layui-icon layui-icon-edit"></i>-->
+		<!--							</a>-->
+		<!--							<a onclick="WeAdminShow('修改密码','./password.html',600,400)" title="修改密码" href="javascript:;">-->
+		<!--								<i class="layui-icon layui-icon-util"></i>-->
+		<!--							</a>-->
+		<!--							<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
+		<!--								<i class="layui-icon layui-icon-delete"></i>-->
+		<!--							</a>-->
+		<!--						</td>-->
+		<!--					</tr>-->
+		</tbody>
+	</table>
+	<div class="page">
+		<div>
+			<a class="prev" href="">&lt;&lt;</a>
+			<!--					<a class="num" href="">1</a>-->
+			<span class="current">1</span>
+			<!--					<a class="num" href="">3</a>-->
+			<!--					<a class="num" href="">489</a> -->
+			<a class="next" href="">&gt;&gt;</a>
+		</div>
+	</div>
+</div>
+<!--<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url: 'http://localhost:8080/api/news/getAllNews',
+			type: 'get',
+			// 设置的是请求参数
+			// data: data.field,
+			// 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+			dataType: 'json',
+			success: function (res) {
+				// 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+				// 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+				var data="";
+				$('#memberList > tbody').html("");
+				console.log(res.data.list);
+				for (var i = 0;i<res.data.list.length;i++){
+					var auth = "";
+					if (res.data.list[i]["type"]==0){
+						auth = "已审核";
+					}else if(res.data.list[i]["type"]==1){
+						auth = "待审核";
+					}else if(res.data.list[i]["type"]==2){
+						auth = "已回收";
+					}
+					// console.log(res.data.list[i]["name"]);
+					data+="<tr data-id='"+res.data.list[i]["id"]+"'><td>" +
+							"<div class='layui-unselect layui-form-checkbox'lay-skin='primary'data-id='"+res.data.list[i]["id"]+"'>" +
+							"<i class='layui-icon'>&#xe605;</i></div></td>" +
+							"<td>"+res.data.list[i]["id"]+"</td>" +
+							"<td>"+res.data.list[i]["pId"]+"</td>" +
+							"<td>"+res.data.list[i]["userId"]+"</td>" +
+							"<td>"+res.data.list[i]["title"]+"</td>" +
+							"<td>"+res.data.list[i]["readCount"]+"</td>" +
+							"<td class='td-status'><span class='layui-btn layui-btn-normal layui-btn-xs'>"+auth+"</span></td>" +
+							"<td>"+formatDate(res.data.list[i]["createTime"])+"</td><td>"+formatDate(res.data.list[i]["updateTime"])+"</td>" +
+							"<td class='td-manage'>" +
+
+							"<a title='编辑' onclick=\"WeAdminEdit('编辑','edit.html', "+res.data.list[i]["id"]+", 600, 400)\" href=\"javascript:;\"><i class='layui-icon layui-icon-edit'></i></a>" +
+							"<a title='删除'onclick=\"member_del(this,"+res.data.list[i]["id"]+")\"href=\"javascript:;\"><i class='layui-icon layui-icon-delete'></i></a></td></tr>";
+
+					$('#memberList > tbody').html(data);
+					// console.log("1123123")
+				}
+
+			}
+		})
+	});
+	// $('#memberList > thead').html("data");
+	// $('#memberList > tbody').html("data");
+	function formatDate(date) {
+		var arr = date.split("T");
+		var d = arr[0];
+		var darr = d.split('-');
+		var t = arr[1];
+		var tarr = t.split('.000');
+		var marr = tarr[0].split(':');
+		var dd = parseInt(darr[0]) + "/" + parseInt(darr[1]) + "/" + parseInt(darr[2]) + " " + parseInt(marr[0]) + ":" + parseInt(marr[1]) + ":" + parseInt(marr[2]);
+		return formatDateTime(dd);
+	}
+
+	function formatDateTime(date) {
+		let time = new Date(Date.parse(date));
+		time.setTime(time.setHours(time.getHours() + 8));
+		let Y = time.getFullYear() + '-';
+		let M = addZero(time.getMonth() + 1) + '-';
+		let D = addZero(time.getDate()) + ' ';
+		let h = addZero(time.getHours()) + ':';
+		let m = addZero(time.getMinutes()) + ':';
+		let s = addZero(time.getSeconds());
+		return Y + M + D;
+	}
+	function addZero(num) {
+		return num < 10 ? '0' + num : num;
+	}
+</script>
+</body>
+
+</html>
